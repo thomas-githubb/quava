@@ -84,7 +84,7 @@ export default function VirtualFridge() {
         
         setGroceries([...groceries, {
             name: name, 
-            key: groceries.length, 
+            key: groceries.length+1, 
             expiry: expiry, 
             amount: amount, 
             unit_s: "item", 
