@@ -36,68 +36,64 @@ export default function VirtualFridge() {
                 expiry: "2024-11-14",
                 amount: 1,
                 unit_s: "loaf",
-                unit_p: "loaves"
+                unit_p: "loaves",
+                fg: "grains"
+            },
+            {
+                name: "Celery Sticks",
+                key: 2,
+                expiry: "2024-11-8",
+                amount: 12,
+                unit_s: "stick",
+                unit_p: "sticks",
+                fg: "vegetables"
             },
             {
                 name: "Eggs",
-                key: 2,
+                key: 3,
                 expiry: "2024-12-01",
                 amount: 12,
                 unit_s: "egg",
-                unit_p: "eggs"
+                unit_p: "eggs",
+                fg: "meats"
             },
             {
                 name: "Milk",
-                key: 3,
+                key: 4,
                 expiry: "2024-11-14",
                 amount: 1,
                 unit_s: "carton",
-                unit_p: "cartons"
+                unit_p: "cartons",
+                fg: "dairy"
+            },
+            {
+                name: "Strawberries",
+                key: 5,
+                expiry: "2024-11-9",
+                amount: 1,
+                unit_s: "dozen",
+                unit_p: "dozens",
+                fg: "fruits"
             },
         ]
     );
 
-    // let groceries = [
-    //     {
-    //         name: "Bread",
-    //         key: 1, // UUID
-    //         expiry: "2024-11-14",
-    //         amount: 1,
-    //         unit_s: "loaf",
-    //         unit_p: "loaves"
-    //     },
-    //     {
-    //         name: "Eggs",
-    //         key: 2,
-    //         expiry: "2024-12-1",
-    //         amount: 12,
-    //         unit_s: "egg",
-    //         unit_p: "eggs"
-    //     },
-    //     {
-    //         name: "Milk",
-    //         key: 3,
-    //         expiry: "2024-11-14",
-    //         amount: 1,
-    //         unit_s: "carton",
-    //         unit_p: "cartons"
-    //     },
-    // ]
 
     
 
-    const addGroc = (name:string, expiry:string, amount:number) => {
+    const addGroc = (name:string, expiry:string, amount:number, fg:string) => {
         // console.log(groceries);
         
         setGroceries([...groceries, {
             name: name, 
-            key: groceries.length+1, 
+            key: groceries[groceries.length - 1].key+1,  // should be last key + 1
             expiry: expiry, 
             amount: amount, 
             unit_s: "item", 
-            unit_p: "items"
+            unit_p: "items",
+            fg: fg
         }])
-        // console.log(groceries);
+        console.log(groceries);
 
     }
 
@@ -108,7 +104,7 @@ export default function VirtualFridge() {
         // console.log(groceries);
     }
 
-    const modifyItem = (remKey:number, name2:string, expiry2:string, amount2:number) => {
+    const modifyItem = (remKey:number, name2:string, expiry2:string, amount2:number, fg2: string) => {
         // console.log(groceries);
         // console.log(remKey);
         setGroceries(groceries.map((groc) => {
@@ -118,54 +114,94 @@ export default function VirtualFridge() {
                 expiry: expiry2, 
                 amount: amount2, 
                 unit_s: groc.unit_s, 
-                unit_p: groc.unit_p
+                unit_p: groc.unit_p,
+                fg: fg2
             } : {
                 name: groc.name, 
                 key: groc.key, 
                 expiry: groc.expiry, 
                 amount: groc.amount, 
                 unit_s: groc.unit_s, 
-                unit_p: groc.unit_p
+                unit_p: groc.unit_p,
+                fg: groc.fg
             })
         }));
-        // console.log(groceries);
+        console.log(groceries);
     }
 
-
+    const groupToImg = {
+        "fruits": "/fruits.png",
+        "vegetables": "/vegetables.png",
+        "dairy": "/dairy.png",
+        "grains": "/grains.png",
+        "meats": "/meats.png",
+    }
 
 
     const [newItemName, setNewItemName] = useState("Name of Item");
     const [newItemExpiry, setNewItemExpiry] = useState("YYYY-MM-DD");
     const [newItemAmount, setNewItemAmount] = useState(0);
     const [isModifying, setIsModifying] = useState(false);
+    const [newFg, setNewFg] = useState('vegetables');
 
     const newItem = {
         name: newItemName, 
         expiry: newItemExpiry, 
-        amount: newItemAmount
+        amount: newItemAmount,
+        fg: newFg
     }
 
-  return (
-    <Table>
-        <TableHeader>
+    // add spacing between table, button, and edit and remove button
+    return (
+        <div className="py-50px px-50px">
+        <Table 
+          className="[&_tr:last-child]:border-0 block h-[500px]"
+        //   Below line must stay
+          containerClassname="h-fit max-h-80 overflow-y-auto relative"
+        >
+          <TableHeader>
             <TableRow>
-            <TableHead className="w-[100px]">Item</TableHead>
-            <TableHead>Expiry Date</TableHead>
-            <TableHead> &emsp; &emsp; &emsp; &emsp; Amount</TableHead>
-            <TableHead className="text-right"></TableHead>
+              <TableHead className="w-1/5 px-2 py-1">Item</TableHead>
+              <TableHead className="w-2/5 px-2 py-1">Expiry Date</TableHead>
+              <TableHead className="w-1/5 px-2 py-1">Amount</TableHead>
+              <TableHead className="w-1/5 px-2 py-1"></TableHead>
             </TableRow>
-        </TableHeader>
-        <TableBody className="overflow-y-scroll">
-            {groceries.map((fStuff) => (
+          </TableHeader>
+    
+          <TableBody className="block h-[500px] ">
+            {/* {groceries.map((t) => (
+              <TableRow key={t.key} className="">
+                <TableCell className="px-2 py-1">{t.name}</TableCell>
+                <TableCell className="px-2 py-1">{t.expiry}</TableCell>
+                <TableCell className="px-2 py-1">{t.amount}</TableCell>
+                <TableCell className="px-2 py-1">{t.unit_s}</TableCell>
+              </TableRow>
+            ))} */}
+
+{groceries.map((fStuff) => (
             <TableRow key={fStuff.key}>
-                <TableCell className="font-medium">
+                <TableCell className="font-medium px-2 py-1">
                     {isModifying ? (
+                        <div className="flex flex-col items-center justify-between">
+                        <Input
+                            id="modGrocFg"
+                            value={fStuff.fg}
+                            onChange={(e) => modifyItem(fStuff.key, fStuff.name, fStuff.expiry, fStuff.amount, e.target.value)}
+                            className="col-span-2 h-8"
+                        />
                         <Input
                             id="modGrocName"
                             value={fStuff.name}
-                            onChange={(e) => modifyItem(fStuff.key, e.target.value, fStuff.expiry, fStuff.amount)}
+                            onChange={(e) => modifyItem(fStuff.key, e.target.value, fStuff.expiry, fStuff.amount, fStuff.fg)}
                             className="col-span-2 h-8"
-                        />) : fStuff.name}
+                        />
+                        </div>
+                        ) : 
+                        <div className="flex flex-col items-center justify-between">
+                        <img src={groupToImg[fStuff.fg]} className="w-auto h-[50px]"></img>
+                        {fStuff.name}
+                        </div>
+                        }
                 </TableCell>
                 <TableCell>
                     {isModifying ? (
@@ -200,16 +236,7 @@ export default function VirtualFridge() {
                 </Button></TableCell>
             </TableRow>
             ))}
-        </TableBody>
         <TableFooter>
-            {/* <TableRow>
-                <TableCell colSpan={3}>Total Groceries</TableCell>
-                <TableCell className="text-right">{
-                    groceries.map((groc) => {
-                        return (groc.amount + " " + (groc.amount > 1 ? groc.unit_p: groc.unit_s) + " ")
-                    }).toString()    
-                }</TableCell>
-            </TableRow> */}
             <TableCell colSpan={2}>
                 <Popover>
                     <PopoverTrigger asChild>
@@ -251,9 +278,18 @@ export default function VirtualFridge() {
                                 className="col-span-2 h-8"
                             />
                             </div>
+                            <div className="grid grid-cols-3 items-center gap-4">
+                            <Label htmlFor="height" className="text-xs">Food Group</Label>
+                            <Input
+                                id="newFg"
+                                value={newItem.fg}
+                                onChange={(e) => setNewFg(e.target.value)}
+                                className="col-span-2 h-8"
+                            />
+                            </div>
                             <Button 
                                 className="px-6 py-3 rounded-lg bg-gray-200 text-[var(--foreground)] font-bold hover:bg-gray-300"
-                                onClick={() => addGroc(newItem.name, newItem.expiry, newItem.amount)}
+                                onClick={() => addGroc(newItem.name, newItem.expiry, newItem.amount, newItem.fg)}
                             >
                                 Add to Fridge
                             </Button>
@@ -295,7 +331,9 @@ export default function VirtualFridge() {
                 ))}
                 </div> */}
             
-        </TableFooter>
-    </Table>
-  )
+        </TableFooter>            
+          </TableBody>
+        </Table>
+        </div>
+      );
 }
