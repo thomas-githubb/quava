@@ -105,7 +105,7 @@ export default function Home() {
         <div className="flex flex-col items-center space-y-4">
           <Image
             src="/quava-logo.png"
-            alt="Quava Logo"
+            alt="Guava Logo"
             width={100}
             height={100}
             className="mx-auto"
@@ -169,9 +169,9 @@ export default function Home() {
       {/* Features Section */}
       <section className="bg-[#2bc276] py-16">
         <div className="max-w-4xl mx-auto text-center space-y-8">
-          <h2 className="text-3xl font-bold">Why Choose Quava?</h2>
+          <h2 className="text-3xl font-bold">Why Choose Guava?</h2>
           <p className="text-lg max-w-xl mx-auto">
-            With Quava, manage your food inventory, track your budget, and find
+            With Guava, manage your food inventory, track your budget, and find
             recipes that use what you have.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -202,7 +202,7 @@ export default function Home() {
       {/* Financial Planner Carousel */}
       <section className="bg-gray-100 py-16">
         <div className="max-w-4xl mx-auto text-center space-y-8">
-          <h2 className="text-3xl font-bold">Explore Quava Features</h2>
+          <h2 className="text-3xl font-bold">Explore Guava Features</h2>
           <p className="text-lg max-w-xl mx-auto">
             Get a quick look at our main features: financial planner, Ava the
             smart chat bot, and virtual fridge.
