@@ -118,7 +118,7 @@ export default function Home() {
             className="text-4xl font-bold tracking-tight"
             style={{ opacity: `${1 - scrollY * 0.0015}` }}
           >
-            Quava
+            Guava
           </h1>
           <p
             className="max-w-lg text-lg text-center"
