@@ -1,7 +1,6 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableFooter,
   TableHead,
@@ -9,8 +8,6 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { getRandomValues } from "crypto"
 import {
     Popover,
     PopoverContent,
@@ -20,13 +17,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react";
 import * as React from "react" 
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator"
  
-const tags = Array.from({ length: 50 }).map(
-  (_, i, a) => `v1.2.0-beta.${a.length - i}`
-)
-
 export default function VirtualFridge() {
     const[groceries, setGroceries] = useState(
         [
@@ -129,7 +120,16 @@ export default function VirtualFridge() {
         console.log(groceries);
     }
 
-    const groupToImg = {
+    type groupToImgType = {
+        [key: string]: string;
+        fruits: string;
+        dairy: string;
+        grains: string;
+        vegetables: string;
+        meats: string;
+    }
+
+    const groupToImg:groupToImgType = {
         "fruits": "/fruits.png",
         "vegetables": "/vegetables.png",
         "dairy": "/dairy.png",
@@ -198,7 +198,7 @@ export default function VirtualFridge() {
                         </div>
                         ) : 
                         <div className="flex flex-col items-center justify-between">
-                        <img src={groupToImg[fStuff.fg]} className="w-auto h-[50px]"></img>
+                        <img src={groupToImg[fStuff.fg]} className="w-auto h-[50px]" alt={fStuff.fg}></img>
                         {fStuff.name}
                         </div>
                         }
@@ -208,7 +208,7 @@ export default function VirtualFridge() {
                         <Input
                             id="modGrocExp"
                             value={fStuff.expiry}
-                            onChange={(e) => modifyItem(fStuff.key, fStuff.name, e.target.value, fStuff.amount)}
+                            onChange={(e) => modifyItem(fStuff.key, fStuff.name, e.target.value, fStuff.amount, fStuff.fg)}
                             className="col-span-2 h-8"
                         />) : fStuff.expiry}
                 </TableCell>
@@ -217,7 +217,7 @@ export default function VirtualFridge() {
                         <Input
                             id="modGrocAmount"
                             value={fStuff.amount}
-                            onChange={(e) => modifyItem(fStuff.key, fStuff.name, fStuff.expiry, e.target.value)}
+                            onChange={(e) => modifyItem(fStuff.key, fStuff.name, fStuff.expiry, Number(e.target.value), fStuff.fg)}
                             className="col-span-2 h-8"
                         />) : (fStuff.amount + " " + (fStuff.amount != 1 ? fStuff.unit_p: fStuff.unit_s))}
                 </TableCell>
@@ -274,7 +274,7 @@ export default function VirtualFridge() {
                             <Input
                                 id="newAmount"
                                 value={newItem.amount}
-                                onChange={(e) => setNewItemAmount(e.target.value)}
+                                onChange={(e) => setNewItemAmount(Number(e.target.value))}
                                 className="col-span-2 h-8"
                             />
                             </div>

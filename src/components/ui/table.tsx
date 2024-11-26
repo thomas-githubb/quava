@@ -16,7 +16,13 @@ import { cn } from "@/lib/utils"
 //   </div>
 // ))
 
-const Table = React.forwardRef(
+type TableProps = React.HTMLAttributes<HTMLTableElement> & {
+  containerClassname?: string; // Add custom prop
+};
+
+const Table = React.forwardRef<
+  HTMLTableElement,
+  TableProps>(
   ({ className, containerClassname, ...props }, ref) => (
     <div className={cn("relative w-full", containerClassname)}>
       <table
